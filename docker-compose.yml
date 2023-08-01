@@ -1,25 +1,33 @@
 # 
-version: "2"
+version: "3.7"
 # 
 services:
   # 
+  item-db:
+    # 
+    image: mongo:3
+    # 
+    ports:
+      - 27017:27017
+    volumes:
+      - app-db:/data/db
+    networks:
+      - item-app-bridge
+    # 
+    restart: on-failure
   item-app:
     # 
     image: riotryulianto/item-app:v1
     # 
     ports:
       - 80:8080
+    networks:
+      - item-app-bridge
     # 
     restart: on-failure
-  # 
-  item-db:
-    # 
-    image: mongo:3
-    # 
-    volumes:
-      - app-db:/data/db
-    # 
-    restart: on-failure
-# 
+#
+networks:
+  name: item-app-bridge
+  driver: bridge
 volumes:
   app-db:
