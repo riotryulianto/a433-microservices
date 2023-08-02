@@ -24,7 +24,7 @@ services:
       - item-app-net
     depends_on:
       - item-db
-    # Memastikan item-app hanya berjalan setelah item-db diluncurkan dengan menerapkan restart policy agar container selalu restart ketika terhenti:
+    # Memastikan item-app hanya berjalan setelah item-db diluncurkan dgn menerapkan restart policy agar container selalu restart ketika terhenti:
     restart: on-failure
 
 networks:
