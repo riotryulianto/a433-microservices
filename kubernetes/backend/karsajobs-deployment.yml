@@ -1,5 +1,5 @@
 apiVersion: v1
-kind: Pod
+kind: Deployment
 metadata:
   name: karsajobs-deployment
   labels:
@@ -8,12 +8,14 @@ spec:
   containers:
   - name: karsajobs
     image: riotryulianto/karsajobs:latest
-    resources:
-      requests:
-        memory: "128Mi" # 128Mi = 128 mebibytes
-        cpu: "500m"     # 500m = 500 milliCPUs (1/2 CPU)
-      limits:
-        memory: "128Mi"
-        cpu: "500m"
+    env:
+    - name: APP_PORT
+      value: "8080"
+    - name: MONGO_HOST
+      value: mongo-service
+    - name: MONGO_USER
+      value: MONGO_ROOT_USERNAME
+    - name: MONGO_PASS
+      value: MONGO_ROOT_PASSWORD
     ports:
       - containerPort: 80
