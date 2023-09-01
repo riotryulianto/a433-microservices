@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: data-tier
   labels:
-    app: mongo
-  name: mongo-service
+    app: microservices
 spec:
   ports:
   - port: 27017
@@ -11,5 +11,5 @@ spec:
     targetPort: 27017
     nodePort: 32000
   selector:
-    app: mongo
+    tier: data
   type: NodePort

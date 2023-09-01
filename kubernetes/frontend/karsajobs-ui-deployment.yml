@@ -1,12 +1,23 @@
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: karsajobs-ui-deployment
+  name: support-tier
   labels:
-    app: frontend
+    app: microservices
+    tier: support
 spec:
-  containers:
-  - name: karsajobs-ui
-    image: riotryulianto/karsajobs-ui:latest
-    ports:
-      - containerPort: 80
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: support
+  template:
+    metadata:
+      labels:
+        app: microservices
+        tier: support
+    spec:
+      containers:
+      - name: karsajobs-ui
+        image: riotryulianto/karsajobs-ui:latest
+        ports:
+          - containerPort: 80

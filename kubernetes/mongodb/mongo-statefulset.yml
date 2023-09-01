@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mongo
+  name: data-tier
+  labels:
+    app: microservices
+    tier: data
 spec:
-  serviceName: "mongo"
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      role: mongo
+      tier: data
   template:
     metadata:
       labels:
-        role: mongo
+        app: microservices
+        tier: data
     spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: mongo
-          image: mongo
+          image: mongo:latest
           command:
-            - mongod
-            - "--replSet"
-            - rs0
           ports:
             - containerPort: 27017
           env:
@@ -30,8 +30,8 @@ spec:
               value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
           volumeMounts:
             - name: mongo-persistent-volume
-              mountPath: /data/db
+              mountPath: "/data/db"
             - name: mongo-configmap
-              mountPath: /config
+              mountPath: "/config"
             - name: mongo-secret
-              mountPath: /etc/mongo-credentials
+              mountPath: "/etc/mongo-credentials"
