@@ -1,28 +1,31 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: data-tier
+  name: mongo
+  namespace: statefulset-ns
   labels:
-    app: microservices
-    tier: data
+    app: mongo
+    tier: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      tier: data
+      app: mongo
+      tier: backend
+  serviceName: mongo
   template:
     metadata:
       labels:
-        app: microservices
-        tier: data
+        app: mongo
+        tier: backend
     spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: mongo
           image: mongo:latest
-          command:
           ports:
             - containerPort: 27017
+            - name: mongo
           env:
             - name: MONGO_INITDB_ROOT_USERNAME
               value: /etc/mongo-credentials/MONGO_ROOT_USERNAME
@@ -30,8 +33,12 @@ spec:
               value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
           volumeMounts:
             - name: mongo-persistent-volume
-              mountPath: "/data/db"
+              mountPath: /data/db
             - name: mongo-configmap
-              mountPath: "/config"
+              mountPath: /config
             - name: mongo-secret
-              mountPath: "/etc/mongo-credentials"
+              mountPath: /etc/mongo-credentials
+      volumes:
+          - name: mongo-persistent-volume
+            persistentVolumeClaim:
+              claimName: mongo-pv-claim

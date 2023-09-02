@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: data-tier
+  name: mongo
+  namespace: statefulset-ns
   labels:
-    app: microservices
+    app: mongo
 spec:
   ports:
   - port: 27017
@@ -11,5 +12,6 @@ spec:
     targetPort: 27017
     nodePort: 32000
   selector:
-    tier: data
+    app: mongo
+    tier: backend
   type: NodePort
